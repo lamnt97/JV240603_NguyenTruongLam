@@ -55,7 +55,7 @@ public class ProductController {
             } catch (IOException e) {
                 e.printStackTrace();
                 model.addAttribute("error", "Failed to upload image.");
-                return "product/add"; // Quay về trang add nếu có lỗi
+                return "product/add";
             }
         }
 
@@ -64,15 +64,14 @@ public class ProductController {
             return "redirect:/product";
         }
         model.addAttribute("error", "Failed to create product.");
-        return "product/add"; // Quay về trang add nếu không tạo thành công
+        return "product/add";
     }
 
-    // Phương thức hiển thị form chỉnh sửa sản phẩm
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") int id, Model model) {
         Product product = productService.findById(id);
         if (product == null) {
-            return "redirect:/product"; // Nếu sản phẩm không tồn tại, quay về danh sách
+            return "redirect:/product";
         }
         model.addAttribute("product", product);
         List<Category> categories = categoryService.findAll();
@@ -80,31 +79,30 @@ public class ProductController {
         return "product/edit";
     }
 
-    // Phương thức xử lý chỉnh sửa sản phẩm
     @PostMapping("/edit/{id}")
     public String update(@PathVariable("id") int id, @ModelAttribute Product product,
                          @RequestParam("imgFile") MultipartFile file, Model model) {
         // Tìm sản phẩm theo ID
         Product existingProduct = productService.findById(id);
         if (existingProduct == null) {
-            return "redirect:/product"; // Nếu không tìm thấy sản phẩm
+            return "redirect:/product";
         }
 
-        // Kiểm tra nếu người dùng upload file ảnh mới
+
         if (!file.isEmpty()) {
             String fileName = file.getOriginalFilename();
             String path = "D:\\Rikkei\\MD3\\ktr_md3\\src\\main\\webapp\\uploads\\";
             File destination = new File(path + File.separator + fileName);
             try {
                 Files.write(destination.toPath(), file.getBytes(), StandardOpenOption.CREATE);
-                product.setImage(fileName); // Cập nhật hình ảnh mới
+                product.setImage(fileName);
             } catch (IOException e) {
                 e.printStackTrace();
                 model.addAttribute("error", "Failed to upload image.");
-                return "product/edit"; // Quay về trang edit nếu có lỗi
+                return "product/edit";
             }
         } else {
-            // Giữ lại ảnh cũ nếu không có file mới
+
             product.setImage(existingProduct.getImage());
         }
 
@@ -113,11 +111,11 @@ public class ProductController {
             return "redirect:/product";
         }
 
-        model.addAttribute("product", product); // Truyền lại product nếu có lỗi
+        model.addAttribute("product", product);
         List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
-        model.addAttribute("error", "Failed to update product."); // Thông báo lỗi
-        return "product/edit"; // Quay về trang edit nếu không cập nhật thành công
+        model.addAttribute("error", "Failed to update product.");
+        return "product/edit";
     }
 
     // Phương thức xóa sản phẩm
