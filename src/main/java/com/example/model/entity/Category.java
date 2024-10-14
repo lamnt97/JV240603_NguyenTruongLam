@@ -1,35 +1,32 @@
 package com.example.model.entity;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 public class Category {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(name = "name", length = 100, unique = true, nullable = false)
+    @Column(name = "name",length = 100,unique = true,nullable = false)
     private String name;
-
-    @Column(name = "description", length = 255)
-    private String description;
-
+    @Column(name = "status")
+    @ColumnDefault("1")
+    private boolean status;
     @OneToMany(mappedBy = "category")
     private Set<Product> products;
-
     public Category() {
     }
 
-    public Category(int id, String name, String description, Set<Product> products) {
+    public Category(int id, String name, boolean status, Set<Product> products) {
         this.id = id;
         this.name = name;
-        this.description = description;
+        this.status = status;
         this.products = products;
     }
 
-    // Getters và Setters
     public int getId() {
         return id;
     }
@@ -46,12 +43,12 @@ public class Category {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public boolean isStatus() {
+        return status;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public Set<Product> getProducts() {

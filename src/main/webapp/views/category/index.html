@@ -13,22 +13,22 @@
 </head>
 <body>
 <div class="container">
-  <a th:href="@{/category/add}" class="btn btn-success">Thêm mới</a>
+  <a th:href="@{/category/add}" class="btn btn-success">Them moi</a>
   <table class="table">
     <thead>
     <tr>
       <th>STT</th>
       <th>Name</th>
-      <th>Description</th> <!-- Đã thay đổi từ 'Status' thành 'Description' -->
+      <th>Status</th>
       <th>Action</th>
     </tr>
     </thead>
     <tbody>
 
-    <tr th:each="category, loop : ${categories}">
+    <tr th:each="category,loop : ${categories}">
       <td scope="row" th:text="${loop.count}"></td>
       <td th:text="${category.name}"></td>
-      <td th:text="${category.description}"></td> <!-- Hiển thị mô tả của danh mục -->
+      <td th:text="${category.status ?'Active':'Inactive'}"></td>
       <td>
         <a class="btn btn-primary" th:href="@{'category/edit/'+${category.id}}">Edit</a>
         <a class="btn btn-danger" th:href="@{'category/delete/'+${category.id}}">Delete</a>
